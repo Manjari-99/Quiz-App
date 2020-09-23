@@ -1,0 +1,29 @@
+.bg-background{
+	background: #360033;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right,#360033,#0b8793);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right,#360033, #0b8793); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.font-large{
+	font-size: 80px;
+}
+.font-med{
+	font-size: 60px;
+}
+.image-sm{
+	height: 20px;
+	width: 20px;
+	border-radius: 10px;
+
+}
+.image{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	height: 200px;
+	width: 200px;
+	border-radius: 100px;
+}
+.card-font{
+	background-color:#dfe6e9;
+	font-size: 15px;
+}
