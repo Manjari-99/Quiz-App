@@ -8,3 +8,12 @@ An interactive and colourful quiz app. Contains concepts of web development and 
 XAMPP is a free and open-source cross-platform web server solution stack package.
 We will be running Apache and MySql through Xampp for this particular project.
 ![](/quizz_images/xamppcontrol.png)
+
+### SQL Administration through PhpMyAdmin
+Here we have created 5 tables namely:-
+* users - To contain the information about registered users.
+* score - To contain information about respective scores.
+* questions - Admin can control the list of questions to be displayed in the app.
+* answers - The options and the correct answer for each question are listed here.
+* answered - The status of each gameplay for the corresponding user (insert - update); stores a 0 for wrong input, 1 otherwise
+![](/quizz_images/phpmyadmin.png)
