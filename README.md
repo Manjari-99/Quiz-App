@@ -674,4 +674,4 @@ header('Location: login.php');
 ### Conclusion
 
 This is a basic hands on with the objective of understanding the entire flow of a web development.
-Link to Github Repo - [](https://github.com/Manjari-99/Quiz-App.git)
+Link to Github Repo - [GitHub Quiz App ](https://github.com/Manjari-99/Quiz-App.git)
