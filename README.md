@@ -7,6 +7,8 @@ This project primarily contains php and html including some tinge of css, bootst
 
 The backend consists of a local database. Only registered users can login and play the quiz. The option panel turns red if the answer is correct, green if its incorrect. An instructio page illustrates the usage to the users.
 
+Link to Github Repo - [GitHub Quiz App ](https://github.com/Manjari-99/Quiz-App.git)
+
 Watch the demo video below
 
 
@@ -674,4 +676,6 @@ header('Location: login.php');
 ### Conclusion
 
 This is a basic hands on with the objective of understanding the entire flow of a web development.
-Link to Github Repo - [GitHub Quiz App ](https://github.com/Manjari-99/Quiz-App.git)
+This Project has been checked and approved by Chandrashekhar Prasad who was my instructor under MyWBUT Web Development Training.
+
+[Project Completion Certificate 2 (2).pdf](https://github.com/Manjari-99/Quiz-App/files/11213723/Project.Completion.Certificate.2.2.pdf)
