@@ -7,7 +7,7 @@ This project primarily contains php and html including some tinge of css, bootst
 
 The backend consists of a local database. Only registered users can login and play the quiz. The option panel turns red if the answer is correct, green if its incorrect. An instructio page illustrates the usage to the users.
 
-Watch the demo video linked below
+Watch the demo video below
 
 
 https://user-images.githubusercontent.com/69254860/231437384-256e9ccb-362a-46d7-9f2b-06a31d6061c4.mp4
@@ -32,6 +32,12 @@ Here we have created 5 tables namely:-
 
 ### Web Pages 
 #### login.php - The login page 
+This is the first page the user sees.
+
+
+![](/quizz_images/loginpage.png)
+
+Code:
 ```
 <?php 
 session_start();
@@ -142,4 +148,3 @@ if(!empty($_SESSION)){
 </html>
 ```
 
-![](/quizz_images/loginpage.png)
