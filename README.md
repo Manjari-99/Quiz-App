@@ -222,3 +222,262 @@ This page uses the concept of SESSION in PHP
 	
 ?>
 ```
+
+#### Instruction - Contains the rules of the quiz game.
+
+![](/quizz_images/instructions.png)
+
+Code:
+```
+<?php 
+session_start();
+if(empty($_SESSION))
+	{
+		header('Location:login.php');
+	}
+
+$conn = mysqli_connect("localhost","root","","quiz");
+$_SESSION['score']=0;
+$user_id = $_SESSION['user_id'];
+
+$query = "SELECT * FROM score WHERE user_id LIKE $user_id";
+$result = mysqli_query($conn,$query);
+$result = mysqli_fetch_assoc($result);
+if($result['status']==1)
+{	
+	header('Location:logout.php?id='.$result['user_id'].'');
+}
+$query1 = "SELECT * FROM answered WHERE user_id LIKE $user_id";
+$result1 = mysqli_query($conn,$query1);
+$num1 = mysqli_num_rows($result1);
+if($num1==1){
+	$query1 = "UPDATE answered SET visited1=0,visited2=0,visited3=0,visited4=0,visited5=0 WHERE user_id LIKE $user_id";
+	$result1 = mysqli_query($conn,$query1); }
+	
+else{
+	$query1 = "INSERT INTO answered (user_id,visited1,visited2,visited3,visited4,visited5) VALUES ($user_id,0,0,0,0,0)";
+	$result1 = mysqli_query($conn,$query1);
+}
+	
+
+ ?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Instructions</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+		<link rel="stylesheet" type="text/css" href="style.css">
+
+		<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" rel="stylesheet">
+
+		<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</head>
+<body class="bg-background">
+	<nav class="navbar">
+		<span>
+			<a href="#" class="navbar-brand" style="color:#dfe6e9; float: left;"> Quiz Time</a>
+		</span>
+	</nav>
+	<div style="margin-top: 5px; margin-bottom: 5px;">
+		<h1 class="text-md-center" style="color:#dfe6e9;">Wecome to Quiz Time <?php echo $_SESSION['username']; ?></h1>
+		
+	</div>
+	<div class="container">
+		<div class="row mt-3">
+			<div class="col-md-9" style="display: block; margin-left: auto; margin-right: auto;">
+				<div class="card">
+					<div class="card-header"><h1 class="text-md-center" style="font-family: 'Bebas Neue', cursive; color: #e74c3c">Instructions</h1></div>
+					<div class="card-body card-font" style="font-size: 17px; color: #0a3d62;font-family: 'Rubik', sans-serif;">
+						<div class="text-md-center">
+							<ul>
+								<li ><b style="color: #c0392b">Once you start the quiz you cannot read the instructions again. Read carefully.</b></li><br>
+								<li>Once you click on <span style="color:green;">Start Quiz</span> if you try to go back to previous questions <span style="color: red;"> your session will expire and you will be Logged Out.</span></li><br>
+								<li>Total number of Questions: 5</li><br>
+								<li>Marks granted for each correct answer: 2</li><br>
+								<li>No negative marking for wrong answers.</li><br>
+								<li>All questions are compulsory.</li><br>
+								<li>Clicking on the answer will only display the next question.</li><br>
+								<li>With every correct answer the option panel turns <span style="color:#247615 ;"> green</span> and with every wrong answer it turns <span style="color:#c23616;">red</span>.</li>
+							</ul><br>
+						</div>
+						<div style="display: block; margin-right: auto; margin-left: auto;" class="text-md-center">
+							<a href="quizstart.php?id=<?php echo $user_id; ?>&n=1" class="btn btn-large btn-success">Start Quiz</a>
+							<a href="logout.php?id=<?php echo $user_id; ?>" class="btn btn-large btn-danger text-md-center">Logout</a>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+</body>
+</html>
+```
+#### Quiz Start - The code to initiate the quiz and prepare the database in the back end
+
+![](/quizz_images/question pannel.png)
+
+Code:
+
+```
+<?php
+session_start();
+if(empty($_SESSION))
+	{
+		header('Location:login.php');
+	}
+$conn = mysqli_connect("localhost","root","","quiz");
+$user_id = $_GET['id'];
+
+$q = $_GET['n'];
+$next = $q+1;
+$query2 = "UPDATE answered SET visited$q=1 WHERE user_id LIKE $user_id";
+$result2 = mysqli_query($conn,$query2);
+
+
+if($next < 6)
+{
+	$query6 = "SELECT * FROM answered WHERE user_id LIKE $user_id";
+	$result6 = mysqli_query($conn,$query6);
+	$result6 = mysqli_fetch_assoc($result6);
+	if($result6["visited$next"]==1)
+	{
+		header('Location:logout.php?id='.$user_id.'');
+	}
+
+}
+$query = "SELECT * FROM users WHERE user_id LIKE $user_id";
+
+$result = mysqli_query($conn,$query);
+
+$result = mysqli_fetch_assoc($result);
+
+$username = $result['username'];
+
+$query2 = "SELECT * FROM score WHERE user_id LIKE $user_id";
+
+$result2 = mysqli_query($conn,$query2);
+
+$num = mysqli_num_rows($result2);
+$result2 = mysqli_fetch_assoc($result2);
+if($num==1){
+	if($result2['status']==2)
+	{
+		header('Location:logout.php?id='.$user_id.'');
+	}
+	$query1 = "UPDATE score SET status=1 WHERE user_id LIKE $user_id";
+	$result1 = mysqli_query($conn,$query1);
+	 }
+	
+else{
+	$query1 = "INSERT INTO score (user_id,username,score,status) VALUES ($user_id,'$username',0,1)";
+	$result1 = mysqli_query($conn,$query1);
+}
+ $query3 = "SELECT * FROM questions WHERE q_id LIKE $q";
+ $result3 = mysqli_query($conn,$query3);
+ $result3 = mysqli_fetch_assoc($result3);
+ if(empty($result3))
+ {
+ 	header('Location:score.php');
+ }
+
+
+ $arr = array("0","0","0","0");
+ $id = array(0,0,0,0);
+ $i=0;
+ $query4 = "SELECT * FROM answers WHERE q_id LIKE $q";
+ $result4 = mysqli_query($conn,$query4);
+ while($row = mysqli_fetch_array($result4))
+ {
+ 	$arr[$i] = $row['answer'];
+ 	$id[$i] = $row['a_id'];
+ 	$i++;
+ }
+ $q++;
+ $query5 = "SELECT * FROM answered WHERE user_id LIKE $user_id";
+ $result5 = mysqli_query($conn,$query5);
+ $result5 = mysqli_fetch_assoc($result5);
+ $index = $q-1; 
+?>		
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Quiz Page</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap" rel="stylesheet">
+
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+  	crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+</head>
+<script type="text/javascript">
+	$(document).ready(function(){
+			$('.ans').mouseenter(function(){
+				$(this).css("background-color","#1e3799");
+
+			});
+			$('.ans').mouseleave(function(){
+				$(this).css("background-color","#2e86de");
+			});
+			$('a[id]').click(function(evt){
+				var response = $(this).attr("id");
+				var ans = "<?php echo $result3['ans_id']; ?>";
+				if(response === ans)
+				{
+					$('.card-body').css("background-color","#44bd32");
+				}
+				else
+				{
+					$('.card-body').css("background-color","#c23616");
+				}
+
+				
+        		
+    	});
+		
+	});
+</script>
+<body class="bg-background">
+	<nav class="navbar">
+		<span>
+			<a href="#" class="navbar-brand" style="color:#dfe6e9; float: left;">Quiz Time</a>
+		</span>
+		<a href="logout.php?id=<?php echo $user_id; ?>"><div style="float: right;" class="btn btn-danger">Logout</div></a>
+	</nav>
+	<h1 class="text-md-center" style="color:#dfe6e9; font-size: 50px">All The Best <?php echo $result['username']; ?></h1>
+	<div class="container">
+		<div class="row mt-5">
+			<div class="col-md-7" style="display: block; margin-left: auto;margin-right: auto;">
+				<div class="card" style="color: #0a3d62;font-family: 'Rubik', sans-serif; font-size: 20px;">
+					<div class="card-header">
+						<b><div class="text-md-center q" id="q">Q<?php echo ($q-1); ?>. <?php echo $result3['question']; ?></div></b>
+					</div>
+					<div class="card-body" style="background-color:#C2E7E5;">
+						<div class="row">
+								<div class="col-md-6"><a href="evaluate.php?n=<?php echo $index; ?>&ans=<?php echo $id[0];?>" id="<?php echo $id[0]; ?>" class="col-md-12 btn ans" style="background-color:#2e86de; color: white; margin: 10px 10px;"><?php echo $arr[0]; ?></a></div>
+								<div class="col-md-6"><a href="evaluate.php?n=<?php echo $index; ?>&ans=<?php echo $id[1];?>" id="<?php echo $id[1]; ?>" class="col-md-12 btn ans" style="background-color:#2e86de; color: white; margin: 10px 10px;"><?php echo $arr[1]; ?></a></div>
+								<div class="col-md-6"><a href="evaluate.php?n=<?php echo $index; ?>&ans=<?php echo $id[1];?>" id="<?php echo $id[2]; ?>" class="col-md-12 btn ans" style="background-color:#2e86de; color: white; margin: 10px 10px;"><?php echo $arr[2]; ?></a></div>
+								<div class="col-md-6"><a href="evaluate.php?n=<?php echo $index; ?>&ans=<?php echo $id[3];?>" id="<?php echo $id[3]; ?>" class="col-md-12 btn ans" style="background-color:#2e86de; color: white; margin: 10px 10px;"><?php echo $arr[3]; ?></a></div>
+								
+						</div>
+					</div>
+				</div>
+					
+			</div>
+			
+		</div>
+	</div>
+	<div class="remark text-md-center" style="color: white;"></div>
+</body>
+</html>
+```
