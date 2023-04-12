@@ -10,7 +10,8 @@ The backend consists of a local database. Only registered users can login and pl
 Watch the demo video below
 
 
-https://user-images.githubusercontent.com/69254860/231437384-256e9ccb-362a-46d7-9f2b-06a31d6061c4.mp4
+https://user-images.githubusercontent.com/69254860/231454899-6d217ab7-e0a1-4d72-93af-21c4d7bae81d.mp4
+
 
 
 ## Methodology
@@ -31,7 +32,7 @@ Here we have created 5 tables namely:-
 
 
 ### Web Pages 
-#### login.php - The login page 
+#### Login - The login page 
 This is the first page the user sees.
 
 
@@ -148,3 +149,76 @@ if(!empty($_SESSION)){
 </html>
 ```
 
+#### Login Validation - Validates the log in 
+
+This page uses the concept of SESSION in PHP
+
+```
+<?php
+	
+	session_start();
+	$conn = mysqli_connect("localhost","root","","quiz");
+
+	//fetch values
+
+	$username = $_POST['username'];
+	$email = $_POST['email'];
+	$password = $_POST['password'];
+
+	//check
+
+	$query = "SELECT * FROM users WHERE username LIKE '$username' AND email LIKE '$email' AND password LIKE '$password'";
+	$result = mysqli_query($conn,$query);
+
+	$num = mysqli_num_rows($result);
+
+	if($num==1)
+	{
+		$_SESSION['is_logged_in'] = 1;
+		$result = mysqli_fetch_assoc($result);
+		$_SESSION['username'] = $result['username'];
+		$_SESSION['user_id'] = $result['user_id'];
+		header('Location:instruction.php');
+	}
+	else{
+		header('Location:login.php?err=1');
+	}
+
+?>
+```
+
+#### Registration - If Log in is invalid it takes care of new user registration 
+```
+<?php
+ 
+	$conn = mysqli_connect("localhost","root","","quiz");
+
+
+	$username = $_POST['username'];
+	$email = $_POST['email'];
+	$password = $_POST['password'];
+
+	$query = "SELECT * FROM users WHERE username LIKE '$username' AND email LIKE '$email' AND password LIKE '$password'";
+	$result = mysqli_query($conn,$query);
+
+	$num = mysqli_num_rows($result);
+
+	if($num==0){
+
+	$query1 = "INSERT INTO users (user_id,username,email,password) VALUES (NULL, '$username','$email','$password')";
+
+	if(mysqli_query($conn,$query1))
+	{
+		header('Location:login.php?err=2');
+	}
+	else{
+		header('Location:login.php?err=3');
+	}
+
+	}
+	else{
+		header('Location:login.php?err=4');
+	}
+	
+?>
+```
