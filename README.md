@@ -3,7 +3,10 @@
 ## About
 An interactive and colourful quiz app. Contains concepts of web development and database management. Questions are added and answers are maintained through the database. Every user has to register and registered users can log in to start the quiz. An instruction page pops up. The user gets four options for each question. The screen panel color indicates whether the answer is correct or incorrect( green for correct answer and red for incorrect). A user database maintains the leaderboards. After the quiz, the user can see his/her score along with their rank in the leaderboards.
 
-![](/quizz_images/bandicam 2023-04-12 16-11-57-212.mp4)
+
+
+https://user-images.githubusercontent.com/69254860/231437384-256e9ccb-362a-46d7-9f2b-06a31d6061c4.mp4
+
 
 ## Tools Used 
 ### XAMPP
