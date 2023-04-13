@@ -513,7 +513,6 @@ header("Location: quizstart.php?id=".$user_id."&n=".$q);
 
 #### Score - To display the final scores, leaderboards, user's highest score etc.
 
-![](/quizz_images/score.png)
 
 ```
 <?php
